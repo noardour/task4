@@ -1,5 +1,5 @@
-import "./App.css";
+import { Link, Outlet } from "react-router-dom";
 
-const App = () => <></>;
+const App = () => <div></div>;
 
 export default App;
