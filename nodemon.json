@@ -1,0 +1,5 @@
+{
+  "watch": ["server", "client/src"],
+  "ext": ".ts, .js, .jsx, .tsx",
+  "exec": "cd client && npm run build && cd .. && npx ts-node ./server/index.ts"
+}
