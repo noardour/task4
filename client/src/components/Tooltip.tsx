@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Tooltip: FC = () => (
-  <div>
+  <div className="mb-2">
     <Container>
       <div className="bg-[#232323] p-4 rounded-lg">
         <div className="flex gap-3">
