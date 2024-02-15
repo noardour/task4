@@ -71,9 +71,21 @@ const usersSlice = createSlice({
       user && (user.checked = action.payload.value);
     },
 
+    setCheckedToAll: (state, action: PayloadAction<boolean>) => {
+      state.data.forEach((user) => {
+        user.checked = action.payload;
+      });
+    },
+
     blockUsers: (state) => {
       state.data.forEach((user) => {
         user.checked && (user.status = "blocked");
+      });
+    },
+
+    unblockUsers: (state) => {
+      state.data.forEach((user) => {
+        user.checked && (user.status = "active");
       });
     },
 
@@ -83,6 +95,6 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setChecked, blockUsers, deleteUsers } = usersSlice.actions;
+export const { fetchUsers, setChecked, setCheckedToAll, blockUsers, unblockUsers, deleteUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;

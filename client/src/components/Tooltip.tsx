@@ -1,27 +1,45 @@
-import { FC } from "react";
+import { FC, MouseEventHandler } from "react";
 import Container from "./Container";
 import Button from "./UI/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faLockOpen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { blockUsers, deleteUsers, unblockUsers } from "../store/users/slice";
 
-const Tooltip: FC = () => (
-  <div className="mb-2">
-    <Container>
-      <div className="bg-[#232323] p-4 rounded-lg">
-        <div className="flex gap-3">
-          <Button>
-            <FontAwesomeIcon icon={faLock} /> Block
-          </Button>
-          <Button>
-            <FontAwesomeIcon icon={faLockOpen} />
-          </Button>
-          <Button color="red">
-            <FontAwesomeIcon icon={faTrashCan} />
-          </Button>
+const Tooltip: FC = () => {
+  const dispatch = useAppDispatch();
+
+  const handleBlock: MouseEventHandler = () => {
+    dispatch(blockUsers());
+  };
+
+  const handleRemoveBlock: MouseEventHandler = () => {
+    dispatch(unblockUsers());
+  };
+
+  const handleDelete: MouseEventHandler = () => {
+    dispatch(deleteUsers());
+  };
+
+  return (
+    <div className="mb-2">
+      <Container>
+        <div className="bg-[#232323] p-4 rounded-lg">
+          <div className="flex gap-3">
+            <Button onClick={handleBlock}>
+              <FontAwesomeIcon icon={faLock} /> Block
+            </Button>
+            <Button onClick={handleRemoveBlock}>
+              <FontAwesomeIcon icon={faLockOpen} />
+            </Button>
+            <Button onClick={handleDelete} color="red">
+              <FontAwesomeIcon icon={faTrashCan} />
+            </Button>
+          </div>
         </div>
-      </div>
-    </Container>
-  </div>
-);
+      </Container>
+    </div>
+  );
+};
 
 export default Tooltip;

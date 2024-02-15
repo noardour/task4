@@ -1,48 +1,38 @@
 import { ChangeEventHandler, FC, useEffect, useRef, useState } from "react";
-import { IUser } from "../types/IUser";
+import useAppSelector from "../hooks/useAppSelector";
+import { selectUsers } from "../store/users/selectors";
+import useAppDispatch from "../hooks/useAppDispatch";
+import { fetchUsers, setChecked, setCheckedToAll } from "../store/users/slice";
 
-interface IUserTableRow extends IUser {
-  checked: boolean;
-}
-
-interface UsersTableProps {
-  users: IUser[];
-}
-
-const UsersTable: FC<UsersTableProps> = ({ users }) => {
-  const [userRows, setUserRows] = useState<IUserTableRow[]>(users.map((user) => ({ ...user, checked: false } as IUserTableRow)));
+const UsersTable: FC = () => {
+  const users = useAppSelector(selectUsers);
+  const dispatch = useAppDispatch();
   const [headCheckbox, setHeadCheckbox] = useState<boolean | "indeterminate">(false);
   const headCheckboxRef = useRef<HTMLInputElement>(null);
 
   const handleHeadChecked: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setUserRows(
-      userRows.map((user) => {
-        user.checked = e.target.checked;
-        return user;
-      })
-    );
+    dispatch(setCheckedToAll(e.target.checked));
   };
 
   const handleRowChecked: (id: number) => ChangeEventHandler<HTMLInputElement> = (id: number) => (e) => {
-    setUserRows(
-      userRows.map((item) => {
-        if (item.id == id) item.checked = e.target.checked;
-        return item;
-      })
-    );
+    dispatch(setChecked({ id, value: e.target.checked }));
   };
 
   useEffect(() => {
-    let acc: boolean | "indeterminate" = userRows[0].checked;
-    for (let i = 1; i < userRows.length; i++) {
-      if (userRows[i].checked !== acc) {
+    dispatch(fetchUsers());
+  }, []);
+
+  useEffect(() => {
+    let acc: boolean | "indeterminate" = users[0]?.checked;
+    for (let i = 1; i < users.length; i++) {
+      if (users[i].checked !== acc) {
         acc = "indeterminate";
         break;
       }
     }
     console.log(acc);
     setHeadCheckbox(acc);
-  }, [userRows]);
+  }, [users]);
 
   useEffect(() => {
     if (headCheckboxRef.current) {
@@ -72,7 +62,7 @@ const UsersTable: FC<UsersTableProps> = ({ users }) => {
           </tr>
         </thead>
         <tbody>
-          {userRows.map((user) => (
+          {users.map((user) => (
             <tr key={user.id} className="[&:nth-child(2n+1)]:bg-gray-700 [&:nth-child(2n)]:bg-gray-800">
               <td className="text-center align-middle w-16 border-r border-gray-900">
                 <input
