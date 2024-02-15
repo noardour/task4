@@ -2,11 +2,7 @@ import { FC } from "react";
 import Container from "./Container";
 import Button from "./UI/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faLock,
-  faLockOpen,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
+import { faLock, faLockOpen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 const Tooltip: FC = () => (
   <div className="mb-2">

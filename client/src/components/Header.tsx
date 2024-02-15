@@ -9,16 +9,10 @@ const Header: FC = () => (
         <Link className="font-semibold hover:text-[#60dbfa] text-xl" to="/">
           home
         </Link>
-        <Link
-          className="font-semibold hover:text-[#60dbfa] text-xl"
-          to="/login"
-        >
+        <Link className="font-semibold hover:text-[#60dbfa] text-xl" to="/login">
           login
         </Link>
-        <Link
-          className="font-semibold hover:text-[#60dbfa] text-xl"
-          to="/registration"
-        >
+        <Link className="font-semibold hover:text-[#60dbfa] text-xl" to="/registration">
           register
         </Link>
       </div>

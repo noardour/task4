@@ -10,12 +10,8 @@ interface UsersTableProps {
 }
 
 const UsersTable: FC<UsersTableProps> = ({ users }) => {
-  const [userRows, setUserRows] = useState<IUserTableRow[]>(
-    users.map((user) => ({ ...user, checked: false } as IUserTableRow))
-  );
-  const [headCheckbox, setHeadCheckbox] = useState<boolean | "indeterminate">(
-    false
-  );
+  const [userRows, setUserRows] = useState<IUserTableRow[]>(users.map((user) => ({ ...user, checked: false } as IUserTableRow)));
+  const [headCheckbox, setHeadCheckbox] = useState<boolean | "indeterminate">(false);
   const headCheckboxRef = useRef<HTMLInputElement>(null);
 
   const handleHeadChecked: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -27,9 +23,7 @@ const UsersTable: FC<UsersTableProps> = ({ users }) => {
     );
   };
 
-  const handleRowChecked: (
-    id: number
-  ) => ChangeEventHandler<HTMLInputElement> = (id: number) => (e) => {
+  const handleRowChecked: (id: number) => ChangeEventHandler<HTMLInputElement> = (id: number) => (e) => {
     setUserRows(
       userRows.map((item) => {
         if (item.id == id) item.checked = e.target.checked;
@@ -53,8 +47,7 @@ const UsersTable: FC<UsersTableProps> = ({ users }) => {
   useEffect(() => {
     if (headCheckboxRef.current) {
       headCheckboxRef.current.indeterminate = headCheckbox == "indeterminate";
-      headCheckboxRef.current.checked =
-        headCheckbox != "indeterminate" && headCheckbox;
+      headCheckboxRef.current.checked = headCheckbox != "indeterminate" && headCheckbox;
     }
   }, [headCheckbox]);
 
@@ -80,10 +73,7 @@ const UsersTable: FC<UsersTableProps> = ({ users }) => {
         </thead>
         <tbody>
           {userRows.map((user) => (
-            <tr
-              key={user.id}
-              className="[&:nth-child(2n+1)]:bg-gray-700 [&:nth-child(2n)]:bg-gray-800"
-            >
+            <tr key={user.id} className="[&:nth-child(2n+1)]:bg-gray-700 [&:nth-child(2n)]:bg-gray-800">
               <td className="text-center align-middle w-16 border-r border-gray-900">
                 <input
                   type="checkbox"
@@ -94,9 +84,7 @@ const UsersTable: FC<UsersTableProps> = ({ users }) => {
               </td>
               <td className="p-3 border-r border-gray-900">{user.name}</td>
               <td className="p-3 border-r border-gray-900">{user.eMail}</td>
-              <td className="p-3 border-r border-gray-900 text-right">
-                {user.lastLogin}
-              </td>
+              <td className="p-3 border-r border-gray-900 text-right">{user.lastLogin}</td>
               <td className="p-3 border-zinc-600">{user.status}</td>
             </tr>
           ))}

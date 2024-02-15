@@ -1,6 +1,51 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../types/IUser";
 
+const testUsers: IUser[] = [
+  {
+    id: 1,
+    name: "FirstName SecondName",
+    eMail: "testtest@email.com",
+    lastLogin: "2022.01.01",
+    status: "active",
+  },
+  {
+    id: 2,
+    name: "FirstName SecondName",
+    eMail: "testtest@email.com",
+    lastLogin: "2022.01.01",
+    status: "active",
+  },
+  {
+    id: 3,
+    name: "FirstName SecondName",
+    eMail: "testtest@email.com",
+    lastLogin: "2022.01.01",
+    status: "active",
+  },
+  {
+    id: 4,
+    name: "FirstName SecondName",
+    eMail: "testtest@email.com",
+    lastLogin: "2022.01.01",
+    status: "active",
+  },
+  {
+    id: 5,
+    name: "FirstName SecondName",
+    eMail: "testtest@email.com",
+    lastLogin: "2022.01.01",
+    status: "active",
+  },
+  {
+    id: 6,
+    name: "FirstName SecondName",
+    eMail: "testtest@email.com",
+    lastLogin: "2022.01.01",
+    status: "active",
+  },
+];
+
 export interface IUserRow extends IUser {
   checked: boolean;
 }
@@ -17,10 +62,11 @@ const usersSlice = createSlice({
   name: "users",
   initialState: INITIAL_STATE,
   reducers: {
-    setChecked: (
-      state,
-      action: PayloadAction<{ id: number; value: boolean }>
-    ) => {
+    fetchUsers: (state) => {
+      state.users = testUsers.map((user) => ({ ...user, checked: false } as IUserRow));
+    },
+
+    setChecked: (state, action: PayloadAction<{ id: number; value: boolean }>) => {
       const user = state.users.find((user) => user.id == action.payload.id);
       user && (user.checked = action.payload.value);
     },
