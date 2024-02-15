@@ -51,11 +51,11 @@ export interface IUserRow extends IUser {
 }
 
 export interface UsersState {
-  users: IUserRow[];
+  data: IUserRow[];
 }
 
 const INITIAL_STATE: UsersState = {
-  users: [],
+  data: [],
 };
 
 const usersSlice = createSlice({
@@ -63,22 +63,22 @@ const usersSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     fetchUsers: (state) => {
-      state.users = testUsers.map((user) => ({ ...user, checked: false } as IUserRow));
+      state.data = testUsers.map((user) => ({ ...user, checked: false } as IUserRow));
     },
 
     setChecked: (state, action: PayloadAction<{ id: number; value: boolean }>) => {
-      const user = state.users.find((user) => user.id == action.payload.id);
+      const user = state.data.find((user) => user.id == action.payload.id);
       user && (user.checked = action.payload.value);
     },
 
     blockUsers: (state) => {
-      state.users.forEach((user) => {
+      state.data.forEach((user) => {
         user.checked && (user.status = "blocked");
       });
     },
 
     deleteUsers: (state) => {
-      state.users = state.users.filter((user) => !user.checked);
+      state.data = state.data.filter((user) => !user.checked);
     },
   },
 });
