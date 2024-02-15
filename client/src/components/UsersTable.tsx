@@ -97,9 +97,7 @@ const UsersTable: FC<UsersTableProps> = ({ users }) => {
               <td className="p-3 border-r border-gray-900 text-right">
                 {user.lastLogin}
               </td>
-              <td className="p-3 border-zinc-600">
-                {user.checked ? "1" : "2"}
-              </td>
+              <td className="p-3 border-zinc-600">{user.status}</td>
             </tr>
           ))}
         </tbody>
