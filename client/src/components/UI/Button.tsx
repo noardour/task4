@@ -1,32 +1,16 @@
-import { FC, PropsWithChildren } from "react";
+import { ButtonHTMLAttributes, FC, PropsWithChildren } from "react";
 
-type ButtonColors = "default" | "red";
+type ButtonColors = "main" | "error";
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ButtonColors;
 }
 
-const colors = {
-  default: {
-    idle: "#343e49",
-    active: "#61dafb",
-  },
-  red: {
-    idle: "#493434",
-    active: "#fb6161",
-  },
-};
-
-const Button: FC<PropsWithChildren<ButtonProps>> = ({
-  children,
-  color = "default",
-}) => {
-  const idleColor = colors[color].idle;
-  const activeColor = colors[color].active;
-
+const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, color = "main", onClick }) => {
   return (
     <button
-      className={`p-2 px-4 rounded-lg bg-[${idleColor}] font-semibold uppercase text-white text-[16px] transition hover:bg-[${activeColor}] hover:shadow-[${activeColor}] hover:shadow-md`}
+      className={`p-2 px-4 rounded-lg bg-${color}-idle font-semibold uppercase text-white text-[16px] transition hover:bg-${color} hover:shadow-${color} hover:shadow-md`}
+      onClick={onClick}
     >
       {children}
     </button>

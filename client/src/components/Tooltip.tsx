@@ -32,7 +32,7 @@ const Tooltip: FC = () => {
             <Button onClick={handleRemoveBlock}>
               <FontAwesomeIcon icon={faLockOpen} />
             </Button>
-            <Button onClick={handleDelete} color="red">
+            <Button onClick={handleDelete} color="error">
               <FontAwesomeIcon icon={faTrashCan} />
             </Button>
           </div>
