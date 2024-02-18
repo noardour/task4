@@ -31,19 +31,15 @@ apiRouter.post("/users/create", async (req: Request, res: Response) => {
     return res.send(error);
   }
 
-  try {
-    const user = await prisma.user.create({
-      data: {
-        email: req.body.email,
-        name: req.body.name,
-        password: req.body.password,
-      },
-    });
+  const user = await prisma.user.create({
+    data: {
+      email: req.body.email,
+      name: req.body.name,
+      password: req.body.password,
+    },
+  });
 
-    res.json(user);
-  } catch (err) {
-    res.send(err);
-  }
+  res.json(user);
 });
 
 apiRouter.patch("/users/block", async (req: Request, res: Response) => {
