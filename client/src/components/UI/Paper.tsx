@@ -1,5 +1,12 @@
-import { FC, PropsWithChildren } from "react";
+import classNames from "classnames";
+import { FC, HTMLAttributes, PropsWithChildren } from "react";
 
-const Paper: FC<PropsWithChildren> = ({ children }) => <div className="bg-[#232323] p-4 rounded-lg">{children}</div>;
+interface PaperProps extends HTMLAttributes<HTMLDivElement> {}
+
+const Paper: FC<PropsWithChildren<PaperProps>> = ({ children, className, ...props }) => (
+  <div className={classNames("bg-[#232323] p-4 rounded-lg", className)} {...props}>
+    {children}
+  </div>
+);
 
 export default Paper;

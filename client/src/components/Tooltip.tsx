@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler } from "react";
+import { FC, HTMLAttributes, MouseEventHandler } from "react";
 import Container from "./Container";
 import Button from "./UI/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,8 +7,11 @@ import useAppDispatch from "../hooks/useAppDispatch";
 import { deleteUsers } from "../store/users/slice";
 import { blockUsers, unblockUsers } from "../store/users/actions";
 import Paper from "./UI/Paper";
+import classNames from "classnames";
 
-const Tooltip: FC = () => {
+interface TooltipProps extends HTMLAttributes<HTMLDivElement> {}
+
+const Tooltip: FC<TooltipProps> = ({ className, ...props }) => {
   const dispatch = useAppDispatch();
 
   const handleBlock: MouseEventHandler = () => {
@@ -24,7 +27,7 @@ const Tooltip: FC = () => {
   };
 
   return (
-    <div className="mb-2">
+    <div className={classNames(className)} {...props}>
       <Container>
         <Paper>
           <div className="flex gap-3">

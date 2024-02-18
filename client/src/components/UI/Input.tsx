@@ -6,15 +6,19 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
 }
 
-const Input: FC<InputProps> = ({ error, label, value, onInput, ...props }) => {
+const Input: FC<InputProps> = ({ className, error, label, value, onInput, ...props }) => {
   return (
     <label className="flex flex-col align-start">
       {label && <div>{label}</div>}
       <input
-        className={classNames("p-2 px-4 rounded-lg text-[16px] bg-[#1b1b1b] transition-colors focus-visible:shadow-blur border-2 outline-none", {
-          "text-white border-main-idle focus-visible:border-main focus-visible:drop focus-visible:shadow-main": !error,
-          "border-error text-error": error,
-        })}
+        className={classNames(
+          "p-2 px-4 rounded-lg text-[16px] bg-[#1b1b1b] transition-colors focus-visible:shadow-blur border-2 outline-none",
+          className,
+          {
+            "text-white border-main-idle focus-visible:border-main focus-visible:drop focus-visible:shadow-main": !error,
+            "border-error text-error": error,
+          }
+        )}
         type="text"
         value={value}
         onInput={onInput}
