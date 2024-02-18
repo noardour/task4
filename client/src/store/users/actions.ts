@@ -31,3 +31,14 @@ export const blockUsers = createAsyncThunk("users/block", async (_, thunk) => {
     thunk.rejectWithValue(err);
   }
 });
+
+export const unblockUsers = createAsyncThunk("users/unblock", async (_, thunk) => {
+  try {
+    const state = thunk.getState() as RootState;
+    const ids = state.users.data.filter((user) => user.checked).map((user) => user.id);
+    await axios.patch("/api/users/unblock", { ids: ids });
+    return ids;
+  } catch (err) {
+    thunk.rejectWithValue(err);
+  }
+});

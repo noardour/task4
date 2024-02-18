@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../types/IUser";
-import { blockUsers, fetchUsers } from "./actions";
+import { blockUsers, fetchUsers, unblockUsers } from "./actions";
 
 export interface IUserRow extends IUser {
   checked: boolean;
@@ -30,12 +30,6 @@ const usersSlice = createSlice({
     setCheckedToAll: (state, action: PayloadAction<boolean>) => {
       state.data.forEach((user) => {
         user.checked = action.payload;
-      });
-    },
-
-    unblockUsers: (state) => {
-      state.data.forEach((user) => {
-        user.checked && (user.status = "ACTIVE");
       });
     },
 
@@ -69,9 +63,22 @@ const usersSlice = createSlice({
     builder.addCase(blockUsers.rejected, (state) => {
       state.isLoading = true;
     });
+
+    builder.addCase(unblockUsers.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(unblockUsers.fulfilled, (state, action: PayloadAction<number[]>) => {
+      state.isLoading = false;
+      state.data.forEach((user) => {
+        if (action.payload.includes(user.id)) user.status = "ACTIVE";
+      });
+    });
+    builder.addCase(unblockUsers.rejected, (state) => {
+      state.isLoading = true;
+    });
   },
 });
 
-export const { setChecked, setCheckedToAll, unblockUsers, deleteUsers } = usersSlice.actions;
+export const { setChecked, setCheckedToAll, deleteUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;

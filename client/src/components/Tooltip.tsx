@@ -4,8 +4,8 @@ import Button from "./UI/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faLockOpen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { deleteUsers, unblockUsers } from "../store/users/slice";
-import { blockUsers } from "../store/users/actions";
+import { deleteUsers } from "../store/users/slice";
+import { blockUsers, unblockUsers } from "../store/users/actions";
 
 const Tooltip: FC = () => {
   const dispatch = useAppDispatch();
