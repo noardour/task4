@@ -1,7 +1,8 @@
 export interface IUser {
   id: number;
   name: string;
-  eMail: string;
-  lastLogin: string;
-  status: "active" | "blocked";
+  email: string;
+  lastLoginAt: string | null;
+  regesteredAt: string;
+  status: "ACTIVE" | "BLOCKED";
 }

@@ -2,7 +2,8 @@ import { ChangeEventHandler, FC, useEffect, useRef, useState } from "react";
 import useAppSelector from "../hooks/useAppSelector";
 import { selectUsers } from "../store/users/selectors";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { fetchUsers, setChecked, setCheckedToAll } from "../store/users/slice";
+import { setChecked, setCheckedToAll } from "../store/users/slice";
+import { fetchUsers } from "../store/users/actions";
 
 const UsersTable: FC = () => {
   const users = useAppSelector(selectUsers);
@@ -30,7 +31,6 @@ const UsersTable: FC = () => {
         break;
       }
     }
-    console.log(acc);
     setHeadCheckbox(acc);
   }, [users]);
 
@@ -73,8 +73,8 @@ const UsersTable: FC = () => {
                 />
               </td>
               <td className="p-3 border-r border-gray-900">{user.name}</td>
-              <td className="p-3 border-r border-gray-900">{user.eMail}</td>
-              <td className="p-3 border-r border-gray-900 text-right">{user.lastLogin}</td>
+              <td className="p-3 border-r border-gray-900">{user.email}</td>
+              <td className="p-3 border-r border-gray-900 text-right">{user.regesteredAt}</td>
               <td className="p-3 border-zinc-600">{user.status}</td>
             </tr>
           ))}

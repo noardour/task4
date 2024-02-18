@@ -43,7 +43,7 @@ apiRouter.post("/users/create", async (req: Request, res: Response) => {
 });
 
 apiRouter.patch("/users/block", async (req: Request, res: Response) => {
-  const users = await prisma.user.updateMany({
+  await prisma.user.updateMany({
     where: {
       id: {
         in: req.body.ids,
@@ -54,7 +54,7 @@ apiRouter.patch("/users/block", async (req: Request, res: Response) => {
     },
   });
 
-  res.json(users);
+  res.send("success");
 });
 
 apiRouter.patch("/users/unblock", async (req: Request, res: Response) => {
@@ -69,7 +69,7 @@ apiRouter.patch("/users/unblock", async (req: Request, res: Response) => {
     },
   });
 
-  res.json(users);
+  res.json("success");
 });
 
 apiRouter.delete("/users/delete/", async (req: Request, res: Response) => {
