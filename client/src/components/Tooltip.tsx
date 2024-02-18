@@ -6,6 +6,7 @@ import { faLock, faLockOpen, faTrashCan } from "@fortawesome/free-solid-svg-icon
 import useAppDispatch from "../hooks/useAppDispatch";
 import { deleteUsers } from "../store/users/slice";
 import { blockUsers, unblockUsers } from "../store/users/actions";
+import Paper from "./UI/Paper";
 
 const Tooltip: FC = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +26,7 @@ const Tooltip: FC = () => {
   return (
     <div className="mb-2">
       <Container>
-        <div className="bg-[#232323] p-4 rounded-lg">
+        <Paper>
           <div className="flex gap-3">
             <Button onClick={handleBlock}>
               <FontAwesomeIcon icon={faLock} /> Block
@@ -37,7 +38,7 @@ const Tooltip: FC = () => {
               <FontAwesomeIcon icon={faTrashCan} />
             </Button>
           </div>
-        </div>
+        </Paper>
       </Container>
     </div>
   );
