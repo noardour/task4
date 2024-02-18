@@ -3,10 +3,10 @@ import { FC, InputHTMLAttributes } from "react";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  error?: boolean;
+  error?: string;
 }
 
-const Input: FC<InputProps> = ({ error, label, value, onInput }) => {
+const Input: FC<InputProps> = ({ error, label, value, onInput, ...props }) => {
   return (
     <label className="flex flex-col align-start">
       {label && <div>{label}</div>}
@@ -18,7 +18,9 @@ const Input: FC<InputProps> = ({ error, label, value, onInput }) => {
         type="text"
         value={value}
         onInput={onInput}
+        {...props}
       />
+      {error && <div className="text-error">{error}</div>}
     </label>
   );
 };

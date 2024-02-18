@@ -7,7 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   color?: ButtonColors;
 }
 
-const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, color = "main", onClick }) => {
+const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, color = "main", onClick, ...props }) => {
   return (
     <button
       className={classNames("p-2 px-4 rounded-lg font-semibold uppercase text-white text-[16px] transition hover:shadow-blur", {
@@ -15,6 +15,7 @@ const Button: FC<PropsWithChildren<ButtonProps>> = ({ children, color = "main", 
         "bg-error-idle hover:bg-error hover:shadow-error": color == "error",
       })}
       onClick={onClick}
+      {...props}
     >
       {children}
     </button>
