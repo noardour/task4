@@ -9,6 +9,9 @@ export default {
         error: "#fb6161",
         "error-idle": "#493434",
       },
+      boxShadow: {
+        blur: "0 0 10px 0",
+      },
     },
   },
   plugins: [],
