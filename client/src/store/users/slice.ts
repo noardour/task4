@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../types/IUser";
-import { blockUsers, fetchUsers, unblockUsers } from "./actions";
+import { blockUsers, createUser, fetchUsers, unblockUsers } from "./actions";
 
 export interface IUserRow extends IUser {
   checked: boolean;
@@ -47,12 +47,14 @@ const usersSlice = createSlice({
       state.data = action.payload.map((user) => ({ ...user, checked: false }));
       state.isLoading = false;
     });
-    builder.addCase(fetchUsers.rejected, (_, action) => {
-      console.log(action.payload);
+    builder.addCase(fetchUsers.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string;
     });
 
     builder.addCase(blockUsers.pending, (state) => {
       state.isLoading = true;
+      state.error = null;
     });
     builder.addCase(blockUsers.fulfilled, (state, action: PayloadAction<number[]>) => {
       state.isLoading = false;
@@ -60,12 +62,14 @@ const usersSlice = createSlice({
         if (action.payload.includes(user.id)) user.status = "BLOCKED";
       });
     });
-    builder.addCase(blockUsers.rejected, (state) => {
-      state.isLoading = true;
+    builder.addCase(blockUsers.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string;
     });
 
     builder.addCase(unblockUsers.pending, (state) => {
       state.isLoading = true;
+      state.error = null;
     });
     builder.addCase(unblockUsers.fulfilled, (state, action: PayloadAction<number[]>) => {
       state.isLoading = false;
@@ -73,8 +77,22 @@ const usersSlice = createSlice({
         if (action.payload.includes(user.id)) user.status = "ACTIVE";
       });
     });
-    builder.addCase(unblockUsers.rejected, (state) => {
+    builder.addCase(unblockUsers.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string;
+    });
+
+    builder.addCase(createUser.pending, (state) => {
       state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(createUser.fulfilled, (state, action: PayloadAction<IUser>) => {
+      state.isLoading = false;
+      state.data.push({ ...action.payload, checked: false });
+    });
+    builder.addCase(createUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload as string;
     });
   },
 });

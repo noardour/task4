@@ -4,6 +4,12 @@ import router from "./router";
 
 const app: Express = express();
 
+app.use(
+  express.urlencoded({
+    extended: false,
+    limit: 10000,
+  })
+);
 app.use(express.json());
 
 const clientDir = path.join(__dirname, "..", "client", "dist");

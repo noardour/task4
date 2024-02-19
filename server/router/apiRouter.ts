@@ -18,7 +18,7 @@ apiRouter.post("/users/create", async (req: Request, res: Response) => {
     repeat_password: Joi.ref("password"),
   });
   const validated = schema.validate(req.body);
-  const existUser = await prisma.user.findUnique({ where: { email: req.body?.email } });
+  const existUser = await prisma.user.findFirst({ where: { email: `${req.body?.email}` } });
   let error: string | undefined;
 
   if (existUser) {

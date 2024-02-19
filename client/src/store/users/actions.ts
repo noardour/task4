@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { IUser } from "../../types/IUser";
 import { RootState } from "..";
+import { RegistrationData } from "../../routes/Registration";
 
 export const fetchUsers = createAsyncThunk(
   "users/fetch",
@@ -38,6 +39,15 @@ export const unblockUsers = createAsyncThunk("users/unblock", async (_, thunk) =
     const ids = state.users.data.filter((user) => user.checked).map((user) => user.id);
     await axios.patch("/api/users/unblock", { ids: ids });
     return ids;
+  } catch (err) {
+    thunk.rejectWithValue(err);
+  }
+});
+
+export const createUser = createAsyncThunk("users/create", async (data: RegistrationData, thunk) => {
+  try {
+    const response = await axios.post<IUser>("/api/users/create", data);
+    return response.data;
   } catch (err) {
     thunk.rejectWithValue(err);
   }
