@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import path from "path";
 import router from "./router";
+import cookieParser from "cookie-parser";
 
 const app: Express = express();
 
@@ -11,6 +12,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 const clientDir = path.join(__dirname, "..", "client", "dist");
 

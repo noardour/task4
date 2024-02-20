@@ -1,16 +1,41 @@
-import { Request, Response, Router } from "express";
+import { Request, RequestHandler, Response, Router } from "express";
 import { PrismaClient } from "@prisma/client";
 import Joi from "joi";
-const prisma = new PrismaClient();
+import jwt from "jsonwebtoken";
 
+const prisma = new PrismaClient();
 const apiRouter = Router();
 
-apiRouter.get("/users", async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
+const authMiddleware: RequestHandler = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  console.log(authHeader);
+  const token = authHeader && authHeader.split(" ")[1];
+
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
+    if (err) return res.sendStatus(403);
+    next();
+  });
+};
+
+apiRouter.post("/users/login", async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (user && user.password !== password) throw Error("Неправильный email или пароль");
+
+    const token = jwt.sign({ userID: user?.id, userEmail: user?.email }, process.env.JWT_SECRET as string);
+
+    res.send({ success: true, token: token });
+  } catch (err) {
+    res.send(400).send({
+      message: err,
+    });
+  }
 });
 
-apiRouter.post("/users/create", async (req: Request, res: Response) => {
+apiRouter.post("/users/register", async (req: Request, res: Response) => {
   const schema = Joi.object({
     email: Joi.string().email().max(255).required(),
     name: Joi.string().min(1).max(255).required(),
@@ -27,8 +52,7 @@ apiRouter.post("/users/create", async (req: Request, res: Response) => {
   error = error || validated.error?.details[0].message;
 
   if (error) {
-    res.status(422);
-    return res.send(error);
+    return res.status(422).send(error);
   }
 
   const user = await prisma.user.create({
@@ -42,7 +66,12 @@ apiRouter.post("/users/create", async (req: Request, res: Response) => {
   res.json(user);
 });
 
-apiRouter.patch("/users/block", async (req: Request, res: Response) => {
+apiRouter.get("/users", authMiddleware, async (req: Request, res: Response) => {
+  const users = await prisma.user.findMany();
+  res.json(users);
+});
+
+apiRouter.patch("/users/block", authMiddleware, async (req: Request, res: Response) => {
   await prisma.user.updateMany({
     where: {
       id: {
@@ -57,7 +86,7 @@ apiRouter.patch("/users/block", async (req: Request, res: Response) => {
   res.send("success");
 });
 
-apiRouter.patch("/users/unblock", async (req: Request, res: Response) => {
+apiRouter.patch("/users/unblock", authMiddleware, async (req: Request, res: Response) => {
   const users = await prisma.user.updateMany({
     where: {
       id: {
@@ -72,7 +101,7 @@ apiRouter.patch("/users/unblock", async (req: Request, res: Response) => {
   res.json("success");
 });
 
-apiRouter.delete("/users/delete/", async (req: Request, res: Response) => {
+apiRouter.delete("/users/delete/", authMiddleware, async (req: Request, res: Response) => {
   const ids = req.query.ids;
 
   if (ids && typeof ids === "string") {
