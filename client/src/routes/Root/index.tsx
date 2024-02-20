@@ -6,7 +6,7 @@ import UsersTable from "../../components/UsersTable";
 const Root: FC = () => (
   <div>
     <Container>
-      <Tooltip />
+      <Tooltip className="mb-2" />
 
       <UsersTable />
     </Container>
