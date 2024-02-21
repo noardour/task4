@@ -119,22 +119,22 @@ class UserController {
   };
 
   remove = async (req: Request, res: Response) => {
-    const ids = req.query.ids;
+    let strIds = req.query.ids as string[];
+    let ids = strIds.map((id) => parseInt(id));
 
-    if (ids && typeof ids === "string") {
+    if (ids && Array.isArray(ids)) {
       await prisma.user.deleteMany({
         where: {
           id: {
-            in: JSON.parse(ids),
+            in: ids,
           },
         },
       });
 
-      return res.json(req.query.ids);
+      return res.json(ids);
     }
 
-    res.status(422);
-    res.send("no ids passed");
+    res.sendStatus(422);
   };
 }
 

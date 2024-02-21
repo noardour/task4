@@ -52,3 +52,19 @@ export const createUser = createAsyncThunk("users/create", async (data: Registra
     thunk.rejectWithValue(err);
   }
 });
+
+export const deleteUsers = createAsyncThunk("users/delete", async (_, thunk) => {
+  try {
+    const state = thunk.getState() as RootState;
+    const response = await appAxios.delete<number[]>("/api/users/delete", {
+      params: {
+        ids: state.users.data.filter((user) => user.checked).map((user) => user.id),
+      },
+    });
+
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    thunk.rejectWithValue(err);
+  }
+});

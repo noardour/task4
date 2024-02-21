@@ -4,8 +4,7 @@ import Button from "./UI/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faLockOpen, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import useAppDispatch from "../hooks/useAppDispatch";
-import { deleteUsers } from "../store/users/slice";
-import { blockUsers, unblockUsers } from "../store/users/actions";
+import { blockUsers, deleteUsers, unblockUsers } from "../store/users/actions";
 import Paper from "./UI/Paper";
 import classNames from "classnames";
 
