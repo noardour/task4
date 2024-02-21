@@ -1,9 +1,24 @@
-import { ChangeEventHandler, FC, useEffect, useRef, useState } from "react";
+import { ChangeEventHandler, FC, PropsWithChildren, TdHTMLAttributes, ThHTMLAttributes, useEffect, useRef, useState } from "react";
 import useAppSelector from "../hooks/useAppSelector";
 import { selectUsers } from "../store/users/selectors";
 import useAppDispatch from "../hooks/useAppDispatch";
 import { setChecked, setCheckedToAll } from "../store/users/slice";
 import { fetchUsers } from "../store/users/actions";
+import classNames from "classnames";
+
+interface UserHeadCellProps extends ThHTMLAttributes<HTMLTableCellElement> {}
+const UserHeadCell: FC<PropsWithChildren<UserHeadCellProps>> = ({ className, children, ...props }) => (
+  <th className={classNames("p-3 [&:not(:last-child)]:border-r border-zinc-700", className)} {...props}>
+    {children}
+  </th>
+);
+
+interface UserCellProps extends TdHTMLAttributes<HTMLTableCellElement> {}
+const UserCell: FC<PropsWithChildren<UserCellProps>> = ({ className, children, ...props }) => (
+  <td className={classNames("p-3 [&:not(:last-child)]:border-r border-gray-900", className)} {...props}>
+    {children}
+  </td>
+);
 
 const UsersTable: FC = () => {
   const users = useAppSelector(selectUsers);
@@ -46,7 +61,7 @@ const UsersTable: FC = () => {
       <table className="border-separate w-full rounded-lg border-spacing-0 overflow-hidden">
         <thead>
           <tr className="bg-[#232323]">
-            <th className="text-center align-middle w-16 border-r border-zinc-700">
+            <UserHeadCell className="text-center align-middle w-16">
               <input
                 type="checkbox"
                 onChange={handleHeadChecked}
@@ -54,28 +69,28 @@ const UsersTable: FC = () => {
                 id="checkbox"
                 ref={headCheckboxRef}
               />
-            </th>
-            <th className="p-3 border-r border-zinc-700">Name</th>
-            <th className="p-3 border-r border-zinc-700">e-Mail</th>
-            <th className="p-3 border-r border-zinc-700">Last Login</th>
-            <th className="p-3">Status</th>
+            </UserHeadCell>
+            <UserHeadCell>Name</UserHeadCell>
+            <UserHeadCell>e-Mail</UserHeadCell>
+            <UserHeadCell>Last Login</UserHeadCell>
+            <UserHeadCell>Status</UserHeadCell>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <tr key={user.id} className="[&:nth-child(2n+1)]:bg-gray-700 [&:nth-child(2n)]:bg-gray-800">
-              <td className="text-center align-middle w-16 border-r border-gray-900">
+              <UserCell className="text-center align-middle w-16">
                 <input
                   type="checkbox"
                   checked={user.checked}
                   onChange={handleRowChecked(user.id)}
                   className="js-checkbox form-checkbox h-5 w-5 text-gray-600"
                 />
-              </td>
-              <td className="p-3 border-r border-gray-900">{user.name}</td>
-              <td className="p-3 border-r border-gray-900">{user.email}</td>
-              <td className="p-3 border-r border-gray-900 text-right">{user.regesteredAt}</td>
-              <td className="p-3 border-zinc-600">{user.status}</td>
+              </UserCell>
+              <UserCell>{user.name}</UserCell>
+              <UserCell>{user.email}</UserCell>
+              <UserCell>{user.regesteredAt}</UserCell>
+              <UserCell>{user.status}</UserCell>
             </tr>
           ))}
         </tbody>
