@@ -37,9 +37,9 @@ const Registration = () => {
         <Form action="/registration" method="POST">
           <div className="mb-8">
             <Input className="mb-2" value={state.name} label="Имя" onChange={handleInput} name="name" />
-            <Input className="mb-2" value={state.email} label="Email" onChange={handleInput} name="email" />
-            <Input className="mb-2" value={state.password} label="Пароль" onChange={handleInput} name="password" />
-            <Input value={state["repeat_password"]} label="Повторить пароль" onChange={handleInput} name="repeat_password" />
+            <Input className="mb-2" value={state.email} label="Email" onChange={handleInput} name="email" type="email" />
+            <Input className="mb-2" value={state.password} label="Пароль" onChange={handleInput} name="password" type="password" />
+            <Input value={state["repeat_password"]} label="Повторить пароль" onChange={handleInput} name="repeat_password" type="password" />
           </div>
           <Button>Зарегистрироваться</Button>
         </Form>

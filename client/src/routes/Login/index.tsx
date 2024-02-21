@@ -32,8 +32,8 @@ const Login: FC = () => {
 
         <Form action="/login" method="POST">
           <div className="mb-8">
-            <Input className="mb-2" value={state.email} label="Email" onChange={handleInput} name="email" />
-            <Input className="mb-2" value={state.password} label="Пароль" onChange={handleInput} name="password" />
+            <Input className="mb-2" value={state.email} label="Email" onChange={handleInput} name="email" type="email" />
+            <Input className="mb-2" value={state.password} label="Пароль" onChange={handleInput} name="password" type="password" />
           </div>
           <Button>Войти</Button>
         </Form>

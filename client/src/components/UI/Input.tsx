@@ -4,6 +4,7 @@ import { FC, InputHTMLAttributes } from "react";
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
+  type?: "text" | "email" | "password";
 }
 
 const Input: FC<InputProps> = ({ className, error, label, value, onInput, ...props }) => {
@@ -19,7 +20,6 @@ const Input: FC<InputProps> = ({ className, error, label, value, onInput, ...pro
             "border-error text-error": error,
           }
         )}
-        type="text"
         value={value}
         onInput={onInput}
         {...props}
