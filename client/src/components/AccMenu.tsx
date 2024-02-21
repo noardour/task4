@@ -7,15 +7,17 @@ const UserMenu: FC = () => {
   const user = useSelector(selectAuthUser);
 
   return (
-    <div className="flex gap-2">
-      <span>Добро пожаловать {user.name}</span>
+    <div className="flex gap-5">
+      <span>
+        Добро пожаловать, <b>{user.name}</b>
+      </span>
       <AppLink to="logout">Log Out</AppLink>
     </div>
   );
 };
 
 const AuthMenu: FC = () => (
-  <div className="flex gap-2">
+  <div className="flex gap-5">
     <AppLink to="/login">Log In</AppLink>
     <AppLink to="/registration">Registration</AppLink>
   </div>
