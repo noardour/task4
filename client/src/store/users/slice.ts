@@ -68,12 +68,14 @@ const usersSlice = createSlice({
       state.error = null;
     });
     builder.addCase(unblockUsers.fulfilled, (state, action: PayloadAction<number[]>) => {
+      console.log("fulf");
       state.isLoading = false;
       state.data.forEach((user) => {
         if (action.payload.includes(user.id)) user.status = "ACTIVE";
       });
     });
     builder.addCase(unblockUsers.rejected, (state, action) => {
+      console.log("rej");
       state.isLoading = false;
       state.error = action.payload as string;
     });

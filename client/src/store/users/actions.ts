@@ -11,7 +11,7 @@ export const fetchUsers = createAsyncThunk(
       const response = await appAxios.get<IUser[]>("/api/users");
       return response.data;
     } catch (err) {
-      thunk.rejectWithValue(err);
+      return thunk.rejectWithValue(err);
     }
   },
   {
@@ -31,7 +31,7 @@ export const blockUsers = createAsyncThunk(
       await appAxios.patch("/api/users/block", { ids: ids });
       return ids;
     } catch (err) {
-      thunk.rejectWithValue(err);
+      return thunk.rejectWithValue(err);
     }
   },
   {
@@ -51,7 +51,7 @@ export const unblockUsers = createAsyncThunk(
       await appAxios.patch("/api/users/unblock", { ids: ids });
       return ids;
     } catch (err) {
-      thunk.rejectWithValue(err);
+      return thunk.rejectWithValue(err);
     }
   },
   {
@@ -69,7 +69,7 @@ export const createUser = createAsyncThunk(
       const response = await appAxios.post<IUser>("/api/users/create", data);
       return response.data;
     } catch (err) {
-      thunk.rejectWithValue(err);
+      return thunk.rejectWithValue(err);
     }
   },
   {
@@ -93,7 +93,7 @@ export const deleteUsers = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      thunk.rejectWithValue(err);
+      return thunk.rejectWithValue(err);
     }
   },
   {
