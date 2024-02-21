@@ -1,11 +1,9 @@
-import { Link } from "react-router-dom";
-import Container from "../components/Container";
-import Paper from "../components/UI/Paper";
-import Input from "../components/UI/Input";
-import Button from "../components/UI/Button";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
-import useAppDispatch from "../hooks/useAppDispatch";
-import { createUser } from "../store/users/actions";
+import { Form, Link, useActionData } from "react-router-dom";
+import Container from "../../components/Container";
+import Paper from "../../components/UI/Paper";
+import Input from "../../components/UI/Input";
+import Button from "../../components/UI/Button";
+import { ChangeEventHandler, useState } from "react";
 
 export interface RegistrationData {
   name: string;
@@ -15,21 +13,16 @@ export interface RegistrationData {
 }
 
 const Registration = () => {
+  const error = useActionData();
   const [state, setState] = useState<RegistrationData>({
     name: "",
     email: "",
     password: "",
     repeat_password: "",
   });
-  const dispatch = useAppDispatch();
 
   const handleInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setState({ ...state, [e.target.name]: e.target.value });
-  };
-
-  const hundleSubmit: FormEventHandler = (e) => {
-    e.preventDefault();
-    dispatch(createUser(state));
   };
 
   return (
@@ -40,7 +33,9 @@ const Registration = () => {
         </Link>
         <h1 className="text-4xl font-bold mb-4">Регистрация</h1>
 
-        <form action="api/users/create" method="POST" onSubmit={hundleSubmit}>
+        {error && <div className="mb-3 mt-3 text-error">{error as string}</div>}
+
+        <Form action="/registration" method="POST">
           <div className="mb-8">
             <Input className="mb-2" value={state.name} label="Имя" onChange={handleInput} name="name" />
             <Input className="mb-2" value={state.email} label="Email" onChange={handleInput} name="email" />
@@ -48,7 +43,7 @@ const Registration = () => {
             <Input value={state["repeat_password"]} label="Повторить пароль" onChange={handleInput} name="repeat_password" />
           </div>
           <Button>Зарегистрироваться</Button>
-        </form>
+        </Form>
       </Paper>
     </Container>
   );

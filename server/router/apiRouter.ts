@@ -10,7 +10,7 @@ const authMiddleware: RequestHandler = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
-  if (token == null) return res.sendStatus(401);
+  if (!token) return res.sendStatus(401);
 
   jwt.verify(token, process.env.JWT_SECRET as string, (err, user) => {
     if (err) return res.sendStatus(403);
@@ -22,19 +22,19 @@ apiRouter.post("/users/login", async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     const user = await prisma.user.findUnique({ where: { email } });
-    if (user && user.password !== password) throw Error("Неправильный email или пароль");
+    if (!user || user.password !== password) return res.status(400).send("Неправильный email или пароль");
 
     const token = jwt.sign({ userID: user?.id, userEmail: user?.email }, process.env.JWT_SECRET as string);
 
-    res.send({ success: true, token: token });
+    res.send({ token, user });
   } catch (err) {
-    res.send(400).send({
+    res.status(400).send({
       message: err,
     });
   }
 });
 
-apiRouter.post("/users/register", async (req: Request, res: Response) => {
+apiRouter.post("/users/registrate", async (req: Request, res: Response) => {
   const schema = Joi.object({
     email: Joi.string().email().max(255).required(),
     name: Joi.string().min(1).max(255).required(),
@@ -51,7 +51,7 @@ apiRouter.post("/users/register", async (req: Request, res: Response) => {
   error = error || validated.error?.details[0].message;
 
   if (error) {
-    return res.status(422).send(error);
+    return res.status(400).send(error);
   }
 
   const user = await prisma.user.create({
@@ -62,7 +62,9 @@ apiRouter.post("/users/register", async (req: Request, res: Response) => {
     },
   });
 
-  res.json(user);
+  const token = jwt.sign({ userID: user?.id, userEmail: user?.email }, process.env.JWT_SECRET as string);
+
+  res.json({ user, token });
 });
 
 apiRouter.get("/users", authMiddleware, async (req: Request, res: Response) => {

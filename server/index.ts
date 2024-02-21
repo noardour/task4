@@ -7,8 +7,7 @@ const app: Express = express();
 
 app.use(
   express.urlencoded({
-    extended: false,
-    limit: 10000,
+    extended: true,
   })
 );
 app.use(express.json());
