@@ -96,7 +96,6 @@ const usersSlice = createSlice({
       state.error = null;
     });
     builder.addCase(deleteUsers.fulfilled, (state, action: PayloadAction<number[]>) => {
-      console.log(action.payload);
       state.data = state.data.filter((user) => !action.payload.includes(user.id));
       state.isLoading = false;
     });

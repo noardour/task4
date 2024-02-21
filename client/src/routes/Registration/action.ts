@@ -13,7 +13,6 @@ const registrationAction: ActionFunction = async ({ request }) => {
     return redirect("/");
   } catch (err) {
     const data = err.response.data;
-    console.log(data);
     return data;
   }
 };
