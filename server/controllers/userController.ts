@@ -29,8 +29,16 @@ class UserController {
       if (!user || user.password !== password) return res.status(400).send("Неправильный email или пароль");
       if (user.status === "BLOCKED") return res.status(400).send("Данный пользователь заблокирован");
 
-      const token = jwt.sign({ userID: user.id, userEmail: user.email }, process.env.JWT_SECRET as string);
+      await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          lastLoginAt: new Date(),
+        },
+      });
 
+      const token = jwt.sign({ userID: user.id, userEmail: user.email }, process.env.JWT_SECRET as string);
       user.password = undefined;
       res.send({ token, user });
     } catch (err) {
@@ -65,6 +73,7 @@ class UserController {
         email: req.body.email,
         name: req.body.name,
         password: req.body.password,
+        lastLoginAt: new Date(),
       },
     });
 

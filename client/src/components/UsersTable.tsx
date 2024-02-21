@@ -89,7 +89,7 @@ const UsersTable: FC = () => {
               </UserCell>
               <UserCell>{user.name}</UserCell>
               <UserCell>{user.email}</UserCell>
-              <UserCell>{user.regesteredAt}</UserCell>
+              <UserCell>{user.lastLoginAt}</UserCell>
               <UserCell>{user.status}</UserCell>
             </tr>
           ))}
