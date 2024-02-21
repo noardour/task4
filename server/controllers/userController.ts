@@ -27,9 +27,11 @@ class UserController {
       const { email, password } = req.body;
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user || user.password !== password) return res.status(400).send("Неправильный email или пароль");
+      if (user.status === "BLOCKED") return res.status(400).send("Данный пользователь заблокирован");
 
       const token = jwt.sign({ userID: user.id, userEmail: user.email }, process.env.JWT_SECRET as string);
 
+      user.password = undefined;
       res.send({ token, user });
     } catch (err) {
       res.status(400).send({
@@ -68,11 +70,21 @@ class UserController {
 
     const token = jwt.sign({ userID: user?.id, userEmail: user?.email }, process.env.JWT_SECRET as string);
 
+    user.password = undefined;
     res.json({ user, token });
   };
 
   fetch = async (req: Request, res: Response) => {
-    const users = await prisma.user.findMany();
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        lastLoginAt: true,
+        regesteredAt: true,
+        status: true,
+      },
+    });
     res.json(users);
   };
 
