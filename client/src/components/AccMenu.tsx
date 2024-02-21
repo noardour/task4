@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useSelector } from "react-redux";
 import { selectAuthUser, selectIsAuthorized } from "../store/auth/selectors";
-import { Link } from "react-router-dom";
+import AppLink from "./UI/AppLink";
 
 const UserMenu: FC = () => {
   const user = useSelector(selectAuthUser);
@@ -9,15 +9,15 @@ const UserMenu: FC = () => {
   return (
     <div className="flex gap-2">
       <span>Добро пожаловать {user.name}</span>
-      <Link to="logout">Log Out</Link>
+      <AppLink to="logout">Log Out</AppLink>
     </div>
   );
 };
 
 const AuthMenu: FC = () => (
   <div className="flex gap-2">
-    <Link to="/login">Log In</Link>
-    <Link to="/registration">Registration</Link>
+    <AppLink to="/login">Log In</AppLink>
+    <AppLink to="/registration">Registration</AppLink>
   </div>
 );
 

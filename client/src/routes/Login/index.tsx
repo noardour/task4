@@ -1,9 +1,10 @@
 import { ChangeEventHandler, FC, useState } from "react";
 import Container from "../../components/Container";
 import Paper from "../../components/UI/Paper";
-import { Form, Link, useActionData } from "react-router-dom";
+import { Form, useActionData } from "react-router-dom";
 import Input from "../../components/UI/Input";
 import Button from "../../components/UI/Button";
+import AppLink from "../../components/UI/AppLink";
 
 export interface LoginData {
   email: string;
@@ -24,9 +25,7 @@ const Login: FC = () => {
   return (
     <Container>
       <Paper>
-        <Link to="/" className="text-main underline hover:text-white">
-          На главную
-        </Link>
+        <AppLink to="/">На главную</AppLink>
         <h1 className="text-4xl font-bold mb-4">Регистрация</h1>
 
         {error && <div className="mb-3 mt-3 text-error">{error as string}</div>}
